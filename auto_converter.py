@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 from os.path import dirname, join, basename, splitext
 from os import stat
 from subprocess import check_output
