@@ -62,3 +62,23 @@ Now to use the program, simply set up your configuration file (see examples dire
 ```
 $ auto-converter /path/to/your/config.ini
 ```
+
+As of right now it simply runs inside the shell and not as a daemon or service of any kind. I am considering how to set this up with sufficiently good logging so that I can view what's going on but not have to keep the shell open. For now, if you want to just keep running this consider using a program like Screen or Tmux.
+
+I personally use Tmux, and you can rather easily set up a session like so:
+
+```
+$ tmux new-session -s auto-converter
+```
+
+A new session will be created and your shell will be attached to it automatically, now you can launch auto-converter
+
+```
+$ auto-converter /path/to/your/config.ini
+```
+
+Now you can exit from the terminal, or just detach from the session (`[Ctrl] + B`, `D`) and auto-converter will keep running inside the tmux session. You can re-attach to the session by executing:
+
+```
+$ tmux attach-session -t auto-converter
+```
