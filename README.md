@@ -1,6 +1,6 @@
 # Auto-Converter
 
-A utility that can be configured with a set of directory pairs. Each pair contains an input directory and an output directory. When a video file in placed in an input directory, it is converted to a given format and placed in an output directory. This utility primarily uses Twisted/iNotify to react to new files and `ffmpeg` to convert video files as needed. It should soon be written to use termbox to display nice-looking progress bars.
+A utility that can be configured to watch a set of media directories. Each media input directory would have corresponding output, done, and error directories. When a video file in placed in an input directory, it is converted to a given format and placed in an output directory. The original source file is placed in the done directory if it was properly converted, otherwise it is placed in the error directory. This utility primarily uses Twisted/iNotify to react to new files and `ffmpeg` to convert video files as needed.
 
 ## Development Setup
 
@@ -35,7 +35,7 @@ Inside the virtual environment you need to install the following python packages
 
 ## Upcoming Features
 
-As of right now, the program only converts to one preset format without giving the user the ability to define their own SD format. A goal of this script would be to allow the user to define the standard format and quality to convert to for each directory.
+As of right now, the program only converts to one preset format without giving the user the ability to define their own SD format. A goal of this script would be to allow the user to define the standard format and quality to convert to for each directory. Another useful feature is to either write this to function as a service/daemon, or to use termbox and display nice-looking progress bars, or both.
 
 ## Installation/Usage
 
