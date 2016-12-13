@@ -54,3 +54,11 @@ Once the pre-requisites are installed, you need to symlink the script to a direc
 ```
 $ sudo ln -s /home/user/Repos/auto-converter/auto_converter.py /usr/local/bin/auto-converter
 ```
+
+### Usage
+
+Now to use the program, simply set up your configuration file (see examples directory) and then execute:
+
+```
+$ auto-converter /path/to/your/config.ini
+```
