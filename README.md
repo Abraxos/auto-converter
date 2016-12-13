@@ -46,7 +46,7 @@ $ sudo apt install ffmpeg mediainfo
 $ wget https://bootstrap.pypa.io/get-pip.py
 $ sudo python3 get-pip.py
 $ rm get-pip.py
-$ pip3 install twisted
+$ sudo pip3 install twisted
 ```
 
 Once the pre-requisites are installed, you need to symlink the script to a directory in your path. For example:
