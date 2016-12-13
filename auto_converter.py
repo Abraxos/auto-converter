@@ -16,7 +16,7 @@ from twisted.python.filepath import FilePath
 from twisted.internet import reactor
 
 ACCEPTED_EVENTS = ['attrib', 'moved_to']
-VIDEO_FILE_EXTENSIONS = [b'.mp4', b'.mkv', b'.avi', b'.wmv', b'.flv']
+VIDEO_FILE_EXTENSIONS = [b'.mp4', b'.mkv', b'.avi', b'.wmv', b'.flv', b'.mpg', b'.mpeg', b'.ts']
 HEIGHT = 640
 WIDTH = 1136
 BITRATES = [56, 64, 80, 96, 112, 128, 160, 192]
