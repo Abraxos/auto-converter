@@ -64,18 +64,18 @@ def mediainfo(f):
     return M
 
 def handle_new_file(config_section, filepath, dst_dir, done_dir, err_dir):
+    filename = basename(filepath.decode('UTF-8'))
+    dst = join(dst_dir, splitext(filename)[0] + '.mp4')
+    err = join(err_dir, filename)
+    done = join(done_dir, filename)
+    print("[{}]: New File: {}".format(config_section, filepath))
     try:
-        print("[{}]: New File: {}".format(config_section, filepath))
-        filename = basename(filepath.decode('UTF-8'))
         M = mediainfo(filepath)
         ab = abr(M)
         h = video_height(M)
         w = video_width(M)
         print("[{}][{}]: Converting to: {}x{} Bit-Rate: {}"
                .format(config_section, filename, w, h, ab))
-        dst = join(dst_dir, splitext(filename)[0] + '.mp4')
-        err = join(err_dir, filename)
-        done = join(done_dir, filename)
         cmd = ['ffmpeg', '-stats', '-y', '-i', filepath.decode('UTF-8'), '-s:v', str(w) + 'x' + str(h)]
         cmd.extend(['-acodec', 'mp3', '-ab', ab] if ab else ['-acodec','copy'])
         cmd.extend(['-c:v', 'libx264', dst])
@@ -86,14 +86,14 @@ def handle_new_file(config_section, filepath, dst_dir, done_dir, err_dir):
         else:
             mv(filepath, done)
     except Exception as e: # pylint: disable=W0703
-        print("[{}][{}]: ERROR - " + str(e))
+        print("[{}][{}]: ERROR - {}".format(config_section, filename, e))
         exc_info = sys.exc_info()
         print_exception(*exc_info)
         try:
             mv(filepath, err)
             # pass
         except Exception as e: # pylint: disable=W0703
-            print("[{}][{}]: ERROR - Unable to move to error directory... " + str(e))
+            print("[{}][{}]: ERROR - Unable to move to error directory... ".format(config_section, filename, e))
 
 def on_directory_changed(_, filepath, mask):
     config_section = DIRECTORY_TO_SECTION_MAP[dirname(filepath.path)]
