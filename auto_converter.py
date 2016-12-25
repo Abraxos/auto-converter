@@ -93,7 +93,7 @@ def handle_new_file(config_section, filepath, dst_dir, done_dir, err_dir):
             mv(filepath, err)
             # pass
         except Exception as e: # pylint: disable=W0703
-            print("[{}][{}]: ERROR - Unable to move to error directory... ".format(config_section, filename, e))
+            print("[{}][{}]: ERROR - Unable to move to error directory... ".format(config_section, filename))
 
 def on_directory_changed(_, filepath, mask):
     config_section = DIRECTORY_TO_SECTION_MAP[dirname(filepath.path)]
