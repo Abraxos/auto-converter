@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-from os.path import dirname, join, basename, splitext
+from os.path import dirname, join, basename, splitext, isfile
 from os import stat
 from subprocess import check_output
 from subprocess import call
@@ -99,14 +99,17 @@ def on_directory_changed(_, filepath, mask):
     config_section = DIRECTORY_TO_SECTION_MAP[dirname(filepath.path)]
     mask = humanReadableMask(mask)
     print("Event {} on {}".format(mask, filepath))
-    if (splitext(filepath.path)[1] in VIDEO_FILE_EXTENSIONS):
-        if any([a for a in mask if a in ACCEPTED_EVENTS]):
-            handle_new_file(config_section, filepath.path,
-                            CONFIG[config_section]['output_directory'],
-                            CONFIG[config_section]['completed_directory'],
-                            CONFIG[config_section]['error_directory'])
+    if isfile(filepath.path):
+        if (splitext(filepath.path)[1] in VIDEO_FILE_EXTENSIONS):
+            if any([a for a in mask if a in ACCEPTED_EVENTS]):
+                handle_new_file(config_section, filepath.path,
+                                CONFIG[config_section]['output_directory'],
+                                CONFIG[config_section]['completed_directory'],
+                                CONFIG[config_section]['error_directory'])
+        else:
+            print('Ignoring non-media file: {}'.format(filepath.path))
     else:
-        print('Ignoring non-media file: {}'.format(filepath.path))
+        print('Ignoring directory: {}'.format(filepath.path))
 
 if __name__ == '__main__':
     global DIRECTORY_TO_SECTION_MAP
