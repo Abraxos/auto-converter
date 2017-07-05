@@ -98,6 +98,7 @@ class Converter(object):
                 sleep(1)
                 sys.stdout.flush()
             except psutil.NoSuchProcess:
+                print()
                 print("Conversion process ended...")
                 break
         result = self.conversion.result()

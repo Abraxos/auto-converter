@@ -8,6 +8,7 @@ from mediainfo import MediaInfo
 from utils import is_media_file, process_converter_service_args
 
 def should_convert(to_convert_path):
+    # TODO: Check if the video file is open in another application
     if is_media_file(to_convert_path):
         # if not an MP4 file, always convert
         if splitext(to_convert_path)[1] != '.mp4':
