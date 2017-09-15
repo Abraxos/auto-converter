@@ -5,6 +5,20 @@ from re import compile as cmpl
 from constants import HEIGHT, WIDTH, BITRATES, AUDIO_KEYS, BITRATE_KEYS
 from utils import str2float
 
+class MediaInfoError(Exception):
+    '''Exception that indicates an error with mediainfo'''
+    pass
+
+class VideoHeightError(MediaInfoError):
+    '''Exception that indicates an error in determining video height'''
+    def __init___(self, video_file):
+        Exception.__init__(self, "Unable to determine video height for: {}".format(video_file))
+
+class VideoWidthError(MediaInfoError):
+    '''Exception that indicates an error in determining video width'''
+    def __init___(self, video_file):
+        Exception.__init__(self, "Unable to determine video width for: {}".format(video_file))
+
 class MediaInfo(object):
     '''An object that represents metadata about a media file based on the mediainfo linux program'''
     def __init__(self, file_path):
@@ -23,13 +37,21 @@ class MediaInfo(object):
 
     def video_height(self):
         '''Returns the height of the video in pixels'''
-        return int(str2float(self.info["Video"]["Height"]) if \
-                   str2float(self.info["Video"]["Height"]) < HEIGHT else HEIGHT)
+        try:
+            result =  int(str2float(self.info["Video"]["Height"]) if \
+                          str2float(self.info["Video"]["Height"]) < HEIGHT else HEIGHT)
+            return result
+        except KeyError:
+            raise VideoHeightError
 
     def video_width(self):
         '''Returns the width of the video in pixels'''
-        return int(str2float(self.info["Video"]["Width"]) if \
-                   str2float(self.info["Video"]["Width"]) < WIDTH else WIDTH)
+        try:
+            result =  int(str2float(self.info["Video"]["Width"]) if \
+                          str2float(self.info["Video"]["Width"]) < WIDTH else WIDTH)
+            return result
+        except KeyError:
+            raise VideoWidthError
 
     def _bitrate(self):
         A = self.info[next(a for a in AUDIO_KEYS if a in self.info)] if \
@@ -59,6 +81,17 @@ class MediaInfo(object):
             return str(pick_bitrate(B)) + 'k'
         else:
             return None
+
+    def valid(self):
+        if 'Video' not in self.info:
+            return False
+        elif 'Audio' not in self.info:
+            return False
+        elif 'Width' in self.info['Video']:
+            return False
+        elif 'Height' in self.info['Video']:
+            return False
+        return True
 
     def more_than_sd(self):
         try:
